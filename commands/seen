@@ -19,7 +19,7 @@ def seen(arg):
     with saxo.database(path) as db:
         if "saxo_seen" in db:
             query = "SELECT * FROM saxo_seen WHERE nick = ?"
-            for (nick, unixtime, channel) in db.query(query, arg):
+            for (nick.strip("_-`"), unixtime, channel) in db.query(query, arg):
                 private = False
                 query = "SELECT * FROM saxo_private WHERE channel = ?"
                 for row in db.query(query, channel):

@@ -29,7 +29,7 @@ def record(irc):
                 # TODO: db["saxo_seen"].replace
                 command = "INSERT OR REPLACE INTO saxo_seen" + \
                     " (nick,unixtime,channel) VALUES(?,?,?)"
-                db.execute(command, irc.nick, int(time.time()), irc.sender)
+                db.execute(command, irc.nick.strip("_-`"), int(time.time()), irc.sender)
                 db.commit()
 
 @saxo.event("JOIN")
