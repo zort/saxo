@@ -6,7 +6,7 @@
 import os
 import saxo
 
-@saxo.command(authorised=True, private=True)
+@saxo.command(authorised=True)
 def private_channel(arg):
     path = os.path.join(saxo.env("base"), "database.sqlite3")
     with saxo.database(path) as db:

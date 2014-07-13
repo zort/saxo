@@ -6,7 +6,7 @@
 import os
 import saxo
 
-@saxo.command(authorised=True, private=True)
+@saxo.command(authorised=True)
 def off(arg):
     if not arg:
         return "Turn a command off"

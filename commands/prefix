@@ -5,7 +5,7 @@
 
 import saxo
 
-@saxo.command(authorised=True, private=True)
+@saxo.command(authorised=True)
 def prefix(arg):
     if arg:
         saxo.client("prefix", arg)

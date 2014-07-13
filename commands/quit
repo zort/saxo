@@ -5,6 +5,6 @@
 
 import saxo
 
-@saxo.command(authorised=True, private=True)
+@saxo.command(authorised=True)
 def quit(arg):
     saxo.client("quit")

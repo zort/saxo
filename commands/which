@@ -23,7 +23,7 @@ def shebang(path):
         return first.split(" ", 1).pop()
     return False
 
-@saxo.command(authorised=True, private=True)
+@saxo.command(authorised=True)
 def which(arg):
     if not arg:
         return "Show information about a command"
