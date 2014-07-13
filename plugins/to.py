@@ -22,7 +22,7 @@ def deliver(irc):
     path = os.path.join(irc.base, "database.sqlite3")
     with saxo.database(path) as db:
         query = "SELECT * FROM saxo_to WHERE recipient = ?"
-        for row in db.query(query, irc.nick):
+        for row in db.query(query, irc.nick.strip("_-`")):
             print(row)
             recipient = row[1]
             sender = row[0]
