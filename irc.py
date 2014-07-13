@@ -94,7 +94,9 @@ class Message(object):
             saxo.send("PRIVMSG", *args)
         self.msg = msg
 
-        if self.command == "PRIVMSG":
+        if self.command == "JOIN":
+            self.sender = self.parameters[0]
+        elif self.command == "PRIVMSG":
             self.sender = self.parameters[0]
             self.text = self.parameters[1]
             self.private = self.sender == self.config["nick"]

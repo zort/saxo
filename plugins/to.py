@@ -29,3 +29,7 @@ def deliver(irc):
             message = row[4]
             irc.say("%s: <%s> %s" % (recipient, sender, message))
             del db["saxo_to"][row]
+
+@saxo.event("JOIN")
+def deliverJOIN(irc):
+    deliver(irc)

@@ -31,3 +31,7 @@ def record(irc):
                     " (nick,unixtime,channel) VALUES(?,?,?)"
                 db.execute(command, irc.nick, int(time.time()), irc.sender)
                 db.commit()
+
+@saxo.event("JOIN")
+def recordJOIN(irc):
+    record(irc)
