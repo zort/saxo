@@ -1,0 +1,11 @@
+# import saxo
+# import json
+
+# @saxo.pipe
+# def stream(arg):
+#     page = saxo.request('https://api.twitch.tv/kraken/streams/lf2stream')
+#     stream_on = json.loads(page)['stream']
+#     if stream_on:
+#         return "lf2stream on"
+#     else:
+#         return "lf2stream off"
