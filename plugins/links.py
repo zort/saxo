@@ -24,7 +24,9 @@ def link(irc):
         if regex_twitter_link.match(url):
             irc.say(tw(url))
         else:
-            irc.say(url + " " + title(url))
+            t = title(url)
+            if t:
+                irc.say(t)
 
 
 
@@ -70,9 +72,9 @@ def title(url):
     if not url:
         url = saxo.env("url")
     if not url:
-        return "Sorry, no link found to title"
+        return
     if " " in url:
-        return "Sorry, links cannot contain spaces"
+        return
 
     if not url.startswith("http"):
         url = "http://" + url
@@ -89,7 +91,7 @@ def title(url):
 
     page = saxo.request(url, limit=262144, follow=True)
     if "html" not in page:
-        return "Sorry, page isn't HTML"
+        return None
     text = regex_script.sub("", page["html"])
     search = regex_title.search(text)
     if search:
@@ -109,7 +111,7 @@ def title(url):
             title = title[:-10]
         title = title.replace('"', "'")
         return title.strip()
-    return "No title found"
+    return
 
 
 

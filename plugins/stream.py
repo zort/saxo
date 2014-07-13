@@ -8,7 +8,7 @@ stream_on = None
 def check_stream(bla):
     global stream_on
     
-    threading.Timer(30, check_stream, [saxo]).start()
+    threading.Timer(60, check_stream, [saxo]).start()
     
     page = saxo.request('https://api.twitch.tv/kraken/streams/lf2stream')['text']
     stream_on_now = json.loads(page)['stream']

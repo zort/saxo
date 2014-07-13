@@ -96,6 +96,9 @@ class Message(object):
 
         if self.command == "JOIN":
             self.sender = self.parameters[0]
+            def say(text):
+                saxo.send("PRIVMSG", self.sender, text)
+            self.say = say
         elif self.command == "PRIVMSG":
             self.sender = self.parameters[0]
             self.text = self.parameters[1]
