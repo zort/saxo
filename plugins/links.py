@@ -25,7 +25,7 @@ def link(irc):
             irc.say(tw(url))
         else:
             t = title(url)
-            if t:
+            if t and t.lower() not in url.lower():
                 irc.say(t)
 
 
