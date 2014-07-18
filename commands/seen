@@ -19,7 +19,7 @@ def seen(arg):
     with saxo.database(path) as db:
         if "saxo_seen" in db:
             query = "SELECT * FROM saxo_seen WHERE nick = ? COLLATE NOCASE"
-            for (nick.strip("_-`"), unixtime, channel) in db.query(query, arg):
+            for (nick, unixtime, channel) in db.query(query, arg.strip("_-`")):
                 private = False
                 query = "SELECT * FROM saxo_private WHERE channel = ?"
                 for row in db.query(query, channel):
@@ -30,7 +30,7 @@ def seen(arg):
                     formatted = time.ctime(unixtime)
                     if nick.lower().strip("_-`") == "chiko":
                         return "Chiko's Pizza was last open on %s at %s" % (nick, channel, formatted)
-                    else
+                    else:
                         return "%s was on %s at %s" % (nick, channel, formatted)
                 return "Sorry, there is no available data"
         else:
