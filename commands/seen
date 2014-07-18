@@ -28,7 +28,10 @@ def seen(arg):
                         break
                 if not private:
                     formatted = time.ctime(unixtime)
-                    return "%s was on %s at %s" % (nick, channel, formatted)
+                    if nick.lower().strip("_-`") == "chiko":
+                        return "Chiko's Pizza was last open on %s at %s" % (nick, channel, formatted)
+                    else
+                        return "%s was on %s at %s" % (nick, channel, formatted)
                 return "Sorry, there is no available data"
         else:
             return "Sorry, there is no saxo_seen database table"
