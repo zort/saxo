@@ -18,7 +18,7 @@ def seen(arg):
     path = os.path.join(saxo.env("base"), "database.sqlite3")
     with saxo.database(path) as db:
         if "saxo_seen" in db:
-            query = "SELECT * FROM saxo_seen WHERE nick = ?"
+            query = "SELECT * FROM saxo_seen WHERE nick = ? COLLATE NOCASE"
             for (nick.strip("_-`"), unixtime, channel) in db.query(query, arg):
                 private = False
                 query = "SELECT * FROM saxo_private WHERE channel = ?"

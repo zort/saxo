@@ -12,6 +12,7 @@ regex_title = re.compile(r"(?ims)<title[^>]*>(.*?)</title>")
 regex_script = re.compile(r"(?ims)<script(.*?)</script>")
 regex_tag = re.compile(r"<[^>]+>")
 regex_entity = re.compile(r"&([^;\s]+);")
+regex_youtube_link = re.compile(r"^https?://www.youtube.com/\S+$")
 
 @saxo.event("PRIVMSG")
 def link(irc):
@@ -27,6 +28,10 @@ def link(irc):
             t = title(url)
             if t and t.lower() not in url.lower():
                 irc.say(t)
+
+        if regex_youtube_link.match(url):
+            irc.say("fixyt link: %s" %
+                    url.replace("youtube", "fixyt").replace("https", "http"))
 
 
 
