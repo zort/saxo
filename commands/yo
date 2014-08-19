@@ -39,4 +39,4 @@ def yo(arg):
     with saxo.database() as db:
         now = int(time.time())
         db["saxo_yo"].insert((nick.strip("_-`"), recipient, now, channel, message))
-        return "Okay, I'll mention that when %s is around" % recipient
+        return "I'll mention that when %s is around" % recipient

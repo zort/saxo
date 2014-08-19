@@ -7,6 +7,8 @@ import re
 import time
 import saxo
 
+from random import random
+
 clock_dict_scales = {
     365.25 * 24 * 3600: ("years", "year", "yrs", "y"),
     29.53059 * 24 * 3600: ("months", "month", "mo"),

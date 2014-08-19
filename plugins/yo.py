@@ -27,7 +27,7 @@ def deliver(irc):
             recipient = row[1]
             sender = row[0]
             message = row[4]
-            irc.say("%s" % message)
+            irc.say('"%s"' % message)
             del db["saxo_yo"][row]
 
 @saxo.event("JOIN")
