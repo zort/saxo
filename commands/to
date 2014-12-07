@@ -38,5 +38,5 @@ def to(arg):
 
     with saxo.database() as db:
         now = int(time.time())
-        db["saxo_to"].insert((nick.strip("_-`"), recipient, now, channel, message))
+        db["saxo_to"].insert((nick, recipient.strip("_-`"), now, channel, message))
         return "Okay, I'll pass that message along to %s" % recipient
