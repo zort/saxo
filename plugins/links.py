@@ -4,6 +4,7 @@
 import html.entities
 import re
 import time
+import string
 
 import saxo
 
@@ -13,6 +14,7 @@ regex_script = re.compile(r"(?ims)<script(.*?)</script>")
 regex_tag = re.compile(r"<[^>]+>")
 regex_entity = re.compile(r"&([^;\s]+);")
 regex_youtube_link = re.compile(r"^https?://www.youtube.com/\S+$")
+tmap_nopunc = str.maketrans("","",string.punctuation+string.whitespace)
 
 @saxo.event("PRIVMSG")
 def link(irc):
@@ -25,9 +27,13 @@ def link(irc):
         if regex_twitter_link.match(url):
             irc.say(tw(url))
         else:
+            # Blurt out the title, but only if it's not in the URL, ignoring
+            # punctuation and whitespace
             t = title(url)
-            if t and t.lower() not in url.lower():
-                irc.say(t)
+            if t:
+                title_in_url = t.lower().translate(tmap_nopunc) in url.lower().translate(tmap_nopunc)
+                if not title_in_url:
+                    irc.say(t)
 
         if regex_youtube_link.match(url):
             irc.say("fixyt link: %s" %
