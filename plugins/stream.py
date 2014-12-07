@@ -5,6 +5,9 @@ import threading
 stream_on = None
 
 @saxo.setup
+def start_check_stream(irc):
+    threading.Timer(60, check_stream, [irc]).start()
+    
 def check_stream(irc):
     global stream_on
     
