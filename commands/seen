@@ -18,7 +18,7 @@ def seen(arg):
     path = os.path.join(saxo.env("base"), "database.sqlite3")
     with saxo.database(path) as db:
         if "saxo_seen" in db:
-            query = "SELECT * FROM saxo_seen WHERE nick = ? COLLATE NOCASE"
+            query = "SELECT * FROM saxo_seen WHERE nick = ?"
             for (nick, unixtime, channel) in db.query(query, arg.strip("_-`")):
                 private = False
                 query = "SELECT * FROM saxo_private WHERE channel = ?"
@@ -29,7 +29,7 @@ def seen(arg):
                 if not private:
                     formatted = time.ctime(unixtime)
                     if nick.lower().strip("_-`") == "chiko":
-                        return "Chiko's Pizza was last open on %s at %s" % (nick, channel, formatted)
+                        return "%s's Pizza was last open on %s at %s" % (nick, channel, formatted)
                     else:
                         return "%s was on %s at %s" % (nick, channel, formatted)
                 return "Sorry, there is no available data"
