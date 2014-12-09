@@ -13,7 +13,7 @@ regex_title = re.compile(r"(?ims)<title[^>]*>(.*?)</title>")
 regex_script = re.compile(r"(?ims)<script(.*?)</script>")
 regex_tag = re.compile(r"<[^>]+>")
 regex_entity = re.compile(r"&([^;\s]+);")
-regex_youtube_link = re.compile(r"^https?://www.youtube.com/\S+$")
+regex_youtube_link = re.compile(r"^https?://((www\.)?youtube\.com|youtu\.be)/\S+$")
 tmap_nopunc = str.maketrans("","",string.punctuation+string.whitespace)
 
 @saxo.event("PRIVMSG")
@@ -36,8 +36,10 @@ def link(irc):
                     irc.say(t)
 
         if regex_youtube_link.match(url):
-            irc.say("fixyt link: %s" %
-                    url.replace("youtube", "fixyt").replace("https", "http"))
+            url = url.replace("youtube.com", "fixyt.com")
+            url = url.replace("youtu.be", "fixyt.com")
+            url = url.replace("https://", "http://")
+            irc.say("fixyt link: " + url)
 
 
 
