@@ -43,12 +43,10 @@ def deliver(irc):
                     ,'The tea leaves spell out: "%s"'
                     ,'I once heard this: "%s"'
                     ,'Yo, by the way, %s'
-                    ,'Incidentally, %s'
                     ,'At night, they howl and they cackle, and their words are: "%s"'
                     ,'If you listen carefully to the wind, you can hear "%s"'
                     ,'Heed this, and you shall prosper: "%s"'
                     ,'Some babies\' first words are "%s"'
-                    ,'My mother\'s dying words were "%s"'
                     ,MC
                     ,'It\'s forseeable that %s'
                     ,'Ancient scriptures read: "%s"'
@@ -63,15 +61,15 @@ def deliver(irc):
                     ,'Don\'t do drugs, they ruin you. Also, %s'
                     ,'Protect your environment. Also, %s'
                     ,'Don\'t do drugs, they ruin you. Also, protect your environment. Also, %s'
-                    ,'The only advice to give is %s'
                     ,'Don\'t forget: "%s"'
                     ,'As William Wallace used to say, "%s"'
                     ,'Even the ancients knew: %s'
                     ,'The bible contains the encoded message: "%s"'
                     ,'If you put a seashell to your ear, you can hear "%s"'
                     ,'Any undergraduate can tell you that %s'
+                    ,'The message you have been tasked to deliver is: "%s"'
                     ])
-            irc.say(quote % message if type(quote) == type("") else MC(message))
+            irc.say(quote % message if type(quote) == type("") else quote(message))
             del db["saxo_yo"][row]
 
 @saxo.event("JOIN")
