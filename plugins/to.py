@@ -24,10 +24,11 @@ def deliver(irc):
         query = "SELECT * FROM saxo_to WHERE recipient = ? COLLATE NOCASE"
         for row in db.query(query, irc.nick.strip("_-`")):
             print(row)
-            recipient = row[1]
             sender = row[0]
+            recipient = row[1]
+            unixtime = row[2]
             message = row[4]
-            irc.say("%s: <%s> %s" % (recipient, sender, message))
+            irc.say("%s: <%s> %s" % (irc.nick, sender, message))
             del db["saxo_to"][row]
 
 @saxo.event("JOIN")

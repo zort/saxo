@@ -25,8 +25,6 @@ def deliver(irc):
         query = "SELECT * FROM saxo_yo WHERE recipient = ? COLLATE NOCASE"
         for row in db.query(query, irc.nick.strip("_-`")):
             print(row)
-            recipient = row[1]
-            sender = row[0]
             message = row[4]
             def MC(message):
                 splitted = message.split(maxsplit=1)
