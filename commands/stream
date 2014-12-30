@@ -1,11 +1,93 @@
-# import saxo
-# import json
+#!/usr/bin/env python3
 
-# @saxo.pipe
-# def stream(arg):
-#     page = saxo.request('https://api.twitch.tv/kraken/streams/lf2stream')
-#     stream_on = json.loads(page)['stream']
-#     if stream_on:
-#         return "lf2stream on"
-#     else:
-#         return "lf2stream off"
+import saxo
+import json
+import time
+
+@saxo.pipe    
+def stream(arg):
+    if arg:
+        return "What do you mean " + str(arg) + "?"
+    if not saxo.env("base"):
+        return "Sorry, this command requires an IRC instance"
+
+    now = int(time.time())
+    remaining = None
+    with saxo.database() as db:
+        for row in db["saxo_periodic"].rows():
+            name = row[0]
+            if name == "check lf2 stream":
+                period = row[1]
+                remaining = period - (now % period)
+                break
+
+        if not remaining:
+            return "Error: 'check lf2 stream' not scheduled (use .periodic to see what's scheduled)"
+        
+        if saxo.env("nick"):
+            db["saxo_lf2stream"].insert((str(saxo.env("nick")),))
+            return "Okay, will let you know what's up next time I check the stream (in %s seconds)" % remaining
+        else:
+            return "Can't get your name. Anyway, checking stream in %s seconds." % remaining
+
+
+    
+    
+    
+    
+# {
+#     "_links": {
+#         "channel": "https://api.twitch.tv/kraken/channels/lf2stream",
+#         "self": "https://api.twitch.tv/kraken/streams/lf2stream"
+#     },
+#     "stream": {
+#         "_id": 12414307600,
+#         "_links": {
+#             "self": "https://api.twitch.tv/kraken/streams/lf2stream"
+#         },
+#         "channel": {
+#             "_id": 32097007,
+#             "_links": {
+#                 "chat": "https://api.twitch.tv/kraken/chat/lf2stream",
+#                 "commercial": "https://api.twitch.tv/kraken/channels/lf2stream/commercial",
+#                 "editors": "https://api.twitch.tv/kraken/channels/lf2stream/editors",
+#                 "features": "https://api.twitch.tv/kraken/channels/lf2stream/features",
+#                 "follows": "https://api.twitch.tv/kraken/channels/lf2stream/follows",
+#                 "self": "https://api.twitch.tv/kraken/channels/lf2stream",
+#                 "stream_key": "https://api.twitch.tv/kraken/channels/lf2stream/stream_key",
+#                 "subscriptions": "https://api.twitch.tv/kraken/channels/lf2stream/subscriptions",
+#                 "teams": "https://api.twitch.tv/kraken/channels/lf2stream/teams",
+#                 "videos": "https://api.twitch.tv/kraken/channels/lf2stream/videos"
+#             },
+#             "background": null,
+#             "banner": null,
+#             "broadcaster_language": "en",
+#             "created_at": "2012-07-13T14:21:39Z",
+#             "delay": 0,
+#             "display_name": "LF2Stream",
+#             "followers": 10,
+#             "game": "Little Fighter 2",
+#             "language": "en",
+#             "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/lf2stream-profile_image-a32d5e9cb248af30-300x300.png",
+#             "mature": false,
+#             "name": "lf2stream",
+#             "partner": false,
+#             "profile_banner": null,
+#             "profile_banner_background_color": null,
+#             "status": "The broadcast of doom and TEH APOCALYPSE!!",
+#             "updated_at": "2014-12-30T18:57:35Z",
+#             "url": "http://www.twitch.tv/lf2stream",
+#             "video_banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/lf2stream-channel_offline_image-61fe156c7eb97ae0-640x360.png",
+#             "views": 774
+#         },
+#         "created_at": "2014-12-30T18:53:08Z",
+#         "game": "Little Fighter 2",
+#         "preview": {
+#             "large": "http://static-cdn.jtvnw.net/previews-ttv/live_user_lf2stream-640x360.jpg",
+#             "medium": "http://static-cdn.jtvnw.net/previews-ttv/live_user_lf2stream-320x180.jpg",
+#             "small": "http://static-cdn.jtvnw.net/previews-ttv/live_user_lf2stream-80x45.jpg",
+#             "template": "http://static-cdn.jtvnw.net/previews-ttv/live_user_lf2stream-{width}x{height}.jpg"
+#         },
+#         "viewers": 1
+#     }
+# }

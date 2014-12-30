@@ -29,3 +29,4 @@ def populate(irc):
     # TODO: Or "check_connection" instead of "ping"
     replace(irc, "check connection", 180, current, b"ping", b"")
     replace(irc, "check unique", 20, current, b"instances", b"")
+    replace(irc, "check lf2 stream", 60, current, b"lf2stream", b"")
