@@ -26,3 +26,8 @@ def wololo(irc):
 def kingme(irc):
     if re.search("\\bking me\\b", irc.text):
         irc.say("17")
+
+@saxo.event("PRIVMSG")
+def fuckme(irc):
+    if re.search("\\bfuck me\\b", irc.text):
+        irc.say("http://i.imgur.com/EgXFnFf.jpg")
