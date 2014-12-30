@@ -3,6 +3,7 @@
 
 import os.path
 import saxo
+import time
 
 @saxo.setup
 def setup(irc):
@@ -28,7 +29,7 @@ def deliver(irc):
             recipient = row[1]
             unixtime = row[2]
             message = row[4]
-            irc.say("%s: <%s> %s" % (irc.nick, sender, message))
+            irc.say("%s: <%s> %s [%s]" % (irc.nick, sender, message, time.ctime(unixtime)))
             del db["saxo_to"][row]
 
 @saxo.event("JOIN")
