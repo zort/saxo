@@ -3,6 +3,8 @@
 
 import saxo
 import re
+from threading import Timer
+import random
 
 @saxo.event("PRIVMSG")
 def exclamation(irc):
@@ -20,7 +22,7 @@ def prefix(irc):
 @saxo.event("PRIVMSG")
 def wololo(irc):
     if re.match("(18(?!!)|29)\\b", irc.text):
-        irc.say("30!")
+        Timer(random.uniform(1.0,1.5), lambda: irc.say("30!")).start()
 
 @saxo.event("PRIVMSG")
 def kingme(irc):
