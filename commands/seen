@@ -32,7 +32,7 @@ def seen(arg):
                         return "%s's Pizza was last open on %s at %s" % (nick, channel, formatted)
                     else:
                         return "%s was on %s at %s" % (nick, channel, formatted)
-                return "Sorry, there is no available data"
+                return "Sorry, there is no available data (case-sensitive)"
         else:
             return "Sorry, there is no saxo_seen database table"
     return "Sorry, no available data"
