@@ -2,6 +2,7 @@
 # Created by Sean B. Palmer
 
 import saxo
+import re
 
 @saxo.event("PRIVMSG")
 def exclamation(irc):
@@ -18,5 +19,10 @@ def prefix(irc):
 
 @saxo.event("PRIVMSG")
 def wololo(irc):
-    if irc.text in ["18", "29", "29?"]:
+    if re.match("(18(?!!)|29)\\b", irc.text):
         irc.say("30!")
+
+@saxo.event("PRIVMSG")
+def kingme(irc):
+    if re.search("\\bking me\\b", irc.text):
+        irc.say("17")
