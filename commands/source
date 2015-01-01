@@ -13,8 +13,8 @@ def source(arg):
     elif ("." in arg) or ("/" in arg) or ("\x00" in arg):
         return "Not a valid command name"
 
-    github = "https://github.com/sbp/saxo/blob/master/commands/"
-    raw = "https://raw2.github.com/sbp/saxo/master/commands/"
+    github = "https://github.com/zort/saxo/blob/master/commands/"
+    raw = "https://raw2.github.com/zort/saxo/master/commands/"
     base = saxo.env("base")
     if base is None:
         return "Sorry, this command requires a running bot"
