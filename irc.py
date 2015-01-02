@@ -285,7 +285,7 @@ class Saxo(object):
         self.sending_thread = None
         self.reconnecting = False
         self.links = {}
-        self.stream_on = False
+        self.lf2stream = {}
 
         self.environment_cache = os.environ.copy()
         self.environment_cache["PYTHONPATH"] = saxo_path
@@ -567,16 +567,9 @@ class Saxo(object):
         exit(0)
 
     def instruction_lf2stream(self):
+        stream_on = 'stream_on' in self.lf2stream and self.lf2stream['stream_on']
         page = web.request('https://api.twitch.tv/kraken/streams/lf2stream')['text']
         stream_on_now = page and json.loads(page)['stream']
-
-        database_filename = os.path.join(self.base, "database.sqlite3")
-        notifees = []
-        with sqlite.Database(database_filename) as db:
-            for row in db["saxo_lf2stream"]:
-                notifees.append(row[0])
-                del db["saxo_lf2stream"][row]
-        notif_string = "" if len(notifees) == 0 else ", ".join(notifees) + ": "
         
         since = None
         viewers = None
@@ -587,21 +580,17 @@ class Saxo(object):
             except KeyError:
                 pass
         
-        if stream_on_now and not self.stream_on:
-            self.send("PRIVMSG", "#lfe", notif_string +
+        if stream_on_now and stream_on:
+            self.send("PRIVMSG", "#lfe",
                       "GREEN LAMP YO http://www.lf-empire.de/forum/lf2stream.php" +
-                      " (since %s, viewers: %s)" % (since, viewers))
-        elif self.stream_on and not stream_on_now:
-            self.send("PRIVMSG", "#lfe", notif_string + "lf2 stream ova")
-        elif notifees:
-            if stream_on_now:
-                self.send("PRIVMSG", "#lfe", notif_string +
-                          "stream on (no change)" +
-                          " (since %s, viewers: %s)" % (since, viewers))
-            else:
-                self.send("PRIVMSG", "#lfe", notif_string + "stream off (no change)")
+                      " (since %s, %s viewers)" % (since, viewers))
+        elif stream_on and not stream_on_now:
+            self.send("PRIVMSG", "#lfe", "lf2 stream ova (started %s)" % since)
 
-        self.stream_on = stream_on_now
+        self.lf2stream['last_checked'] = time.time()
+        self.lf2stream['stream_on'] = stream_on_now
+        self.lf2stream['since'] = since
+        self.lf2stream['viewers'] = viewers
             
 
     def instruction_join(self, channel):
@@ -774,6 +763,7 @@ class Saxo(object):
             env["SAXO_URL"] = self.links[msg.sender]
         if msg.authorised():
             env["SAXO_AUTHORISED"] = "1"
+        env["SAXO_LF2STREAM"] = self.lf2stream
         common.thread(command_process, env, cmd, path, arg)
 
     def scheduled_command(self, cmd, arg, sender=None):

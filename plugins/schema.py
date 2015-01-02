@@ -36,9 +36,3 @@ def schedule(irc):
             ("unixtime", int),
             ("command", bytes),
             ("args", bytes))
-
-@saxo.setup
-def lf2stream(irc):
-    if "saxo_lf2stream" not in irc.db:
-        irc.db["saxo_lf2stream"].create(
-            ("notifee", bytes))

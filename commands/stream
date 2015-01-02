@@ -3,38 +3,26 @@
 import saxo
 import json
 import time
+from common import format_time
 
 @saxo.pipe    
 def stream(arg):
     if arg:
-        return "What do you mean " + str(arg) + "?"
-    if not saxo.env("base"):
-        return "Sorry, this command requires an IRC instance"
+        return "What do you mean %s?" % arg
 
-    now = int(time.time())
-    remaining = None
-    with saxo.database() as db:
-        for row in db["saxo_periodic"].rows():
-            name = row[0]
-            if name == "check lf2 stream":
-                period = row[1]
-                remaining = period - (now % period)
-                break
+    lf2stream = eval(saxo.env("lf2stream"),{"__builtins__":None},{})
 
-        if not remaining:
-            return "Error: 'check lf2 stream' not scheduled (use .periodic to see what's scheduled)"
-        
-        if saxo.env("nick"):
-            db["saxo_lf2stream"].insert((str(saxo.env("nick")),))
-            return "Okay, will let you know what's up next time I check the stream (in %s seconds)" % remaining
-        else:
-            return "Can't get your name. Anyway, checking stream in %s seconds." % remaining
+    if lf2stream is None:
+        return "Haven't yet checked, wait a bit."
 
+    if lf2stream['stream_on']:
+        return "As of %s, stream is on (since %s, %s viewers)".format(
+            format_time(lf2stream['last_checked']),
+            format_time(lf2stream['since']),
+            lf2stream['viewers'])
+    else:
+        return "As of %s, stream is off" % format_time(lf2stream['last_checked'])
 
-    
-    
-    
-    
 # {
 #     "_links": {
 #         "channel": "https://api.twitch.tv/kraken/channels/lf2stream",

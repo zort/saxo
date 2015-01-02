@@ -11,6 +11,8 @@ import signal
 import socket
 import sys
 import threading
+from datetime import timedelta
+import time
 
 # Usage as of 534f8c68:
 # b64pickle: client
@@ -167,3 +169,21 @@ def tsort(graph):
     for connected in tarjan(graph):
         for node in connected:
             yield node
+
+def format_timedelta(d):
+    def plural(x):
+        return "" if x == 1 else "s"
+    if d.days > 2:
+        return "%s day%s" % (d.days, plural(d.days))
+    elif d.days > 0:
+        return "%s day%s %s second%s" % (d.days, plural(d.days), d.seconds, plural(d.seconds))
+    elif d.seconds > 2:
+        return "%s second%s" % (d.seconds, plural(d.seconds))
+    elif d.seconds > 0:
+        return "%s second%s %s milliseconds" % (d.seconds, plural(d.seconds), int(d.microseconds/1000))
+    else:
+        return "%s milliseconds" % int(d.microseconds/1000)
+
+def format_time(then):
+    now = time.time()
+    return format_timedelta(timedelta(seconds=now - then)) + " ago"
