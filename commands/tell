@@ -17,5 +17,4 @@ def tell(arg):
     curr_dir = os.path.dirname(os.path.realpath(__file__))
     to_file = os.path.join(curr_dir, "to")
     with open(to_file) as f:
-        code = compile(f.read(), to_file, 'exec')
-        exec(code, {'pattern': pattern, 'regex_nickname': regex_nickname})
+        exec(compile(f.read(), to_file, 'exec'))

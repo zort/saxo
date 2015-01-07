@@ -21,15 +21,15 @@ def prefix(irc):
 
 @saxo.event("PRIVMSG")
 def wololo(irc):
-    if re.match("(18(?!!)|29)\\b", irc.text):
+    if re.match("(18(?!!)|29(?!\\?))\\b", irc.text):
         Timer(random.uniform(1.0,1.5), lambda: irc.say("30!")).start()
 
 @saxo.event("PRIVMSG")
 def kingme(irc):
-    if re.search("\\bking me\\b", irc.text):
+    if re.search("\\bking me\\b", irc.text, re.IGNORECASE):
         irc.say("17")
 
 @saxo.event("PRIVMSG")
 def fuckme(irc):
-    if re.search("\\bfuck me\\b", irc.text):
+    if re.search("\\bfuck me\\b", irc.text, re.IGNORECASE):
         irc.say("http://i.imgur.com/EgXFnFf.jpg")
