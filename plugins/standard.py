@@ -22,7 +22,7 @@ def prefix(irc):
 @saxo.event("PRIVMSG")
 def wololo(irc):
     if re.match("(18(?!!)|29(?!\\?))\\b", irc.text):
-        Timer(random.uniform(1.0,1.5), lambda: irc.say("30!")).start()
+        Timer(random.uniform(1.0,1.5), irc.say, ["30!"]).start()
 
 @saxo.event("PRIVMSG")
 def kingme(irc):
@@ -33,3 +33,15 @@ def kingme(irc):
 def fuckme(irc):
     if re.search("\\bfuck me\\b", irc.text, re.IGNORECASE):
         irc.say("http://i.imgur.com/EgXFnFf.jpg")
+
+@saxo.event("PRIVMSG")
+def weakasposs(irc):
+    if re.search("\\weak as piss\\b", irc.text, re.IGNORECASE):
+        msg = random.choice(
+            list(map(lambda x: "Who the hell %s?" % x, ["put you up to that", "told you to do this", "told you to do that", "gave you that idea"]))
+            +
+            ["Z" + "O" * x + "U" * (x-3) + "L" * (x-6) for x in [random.randint(8,12)]]
+            )
+        if irc.text.isupper():
+            msg = msg.upper()
+        Timer(random.uniform(1.0,1.5), irc.say, [msg]).start()
