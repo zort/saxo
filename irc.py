@@ -580,12 +580,13 @@ class Saxo(object):
             except KeyError:
                 pass
         
-        if stream_on_now and stream_on:
+        if stream_on_now and not stream_on:
             self.send("PRIVMSG", "#lfe",
                       "GREEN LAMP YO http://www.lf-empire.de/forum/lf2stream.php" +
                       " (since %s, %s viewers)" % (since, viewers))
         elif stream_on and not stream_on_now:
-            self.send("PRIVMSG", "#lfe", "lf2 stream ova (started %s)" % since)
+            self.send("PRIVMSG", "#lfe",
+                      "lf2 stream ova (started %s)" % stream_on['created_at'])
 
         self.lf2stream['last_checked'] = time.time()
         self.lf2stream['stream_on'] = stream_on_now
