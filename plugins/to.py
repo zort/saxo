@@ -4,6 +4,7 @@
 import os.path
 import saxo
 import time
+import random
 
 @saxo.setup
 def setup(irc):
@@ -29,6 +30,7 @@ def deliver(irc):
             recipient = row[1]
             unixtime = row[2]
             message = row[4]
+            sender = sender.replace("Phoenix", random.choice(["Ponik", "Ponix"]))
             irc.say("%s: <%s> %s [%s]" % (irc.nick, sender, message, time.ctime(unixtime)))
             del db["saxo_to"][row]
 

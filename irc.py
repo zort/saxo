@@ -16,9 +16,9 @@ import sys
 import threading
 import time
 
-# For lf2stream
 import web
 import json
+import datetime
 
 # Save PEP 3122!
 if "." in __name__:
@@ -286,6 +286,7 @@ class Saxo(object):
         self.reconnecting = False
         self.links = {}
         self.lf2stream = {}
+        self.Doix = False
 
         self.environment_cache = os.environ.copy()
         self.environment_cache["PYTHONPATH"] = saxo_path
@@ -593,6 +594,32 @@ class Saxo(object):
         self.lf2stream['since'] = since
         self.lf2stream['viewers'] = viewers
             
+    # def instruction_Doix(self):
+    #     Doix = self.Doix
+    #     Doix_now = self.send("WHOIS", "Doix")
+        
+    #     since = None
+    #     viewers = None
+    #     if stream_on_now:
+    #         try:
+    #             since = stream_on_now['created_at']
+    #             viewers = stream_on_now['viewers']
+    #         except KeyError:
+    #             pass
+        
+    #     if stream_on_now and not stream_on:
+    #         self.send("PRIVMSG", "#lfe",
+    #                   "GREEN LAMP YO http://www.lf-empire.de/forum/lf2stream.php" +
+    #                   " (since %s, %s viewers)" % (since, viewers))
+    #     elif stream_on and not stream_on_now:
+    #         self.send("PRIVMSG", "#lfe",
+    #                   "lf2 stream ova (started %s)" % stream_on['created_at'])
+
+    #     self.lf2stream['last_checked'] = time.time()
+    #     self.lf2stream['stream_on'] = stream_on_now
+    #     self.lf2stream['since'] = since
+    #     self.lf2stream['viewers'] = viewers
+            
 
     def instruction_join(self, channel):
         # NOTE: .visit can still be followed by .join
@@ -793,6 +820,11 @@ class Saxo(object):
         # TODO: Change the database
 
     def send(self, *args):
+        now = datetime.datetime.now()
+        if now.month == 1 and now.day == 7 and len(args) == 3 and args[0] == "PRIVMSG":
+            word, sep, rest = args[2].partition(' ')
+            args = args[0:2] + ("LA" + word.upper() + sep + rest,)
+        
         # TODO: Loop detection
         if len(args) > 1:
             args = args[:-1] + (":" + args[-1],)

@@ -24,10 +24,6 @@ def to(arg):
         return "Sorry, I don't know your nickname"
 
     recipient, message = arg.split(" ", 1)
-    # if recipient == nick:
-    #     return "You can tell yourself that"
-    # if recipient == saxo.env("bot"):
-    #     return "Thanks, noted"
 
     if not regex_nickname.match(recipient):
         return "Sorry, %r is not a valid nickname" % recipient
@@ -39,4 +35,9 @@ def to(arg):
     with saxo.database() as db:
         now = int(time.time())
         db["saxo_to"].insert((nick, recipient.strip("_-`"), now, channel, message))
-        return "Okay, I'll pass that message along to %s" % recipient
+        if nick.strip("_-`") == "mdsrv":
+            return "Nah LOL"
+        elif nick.strip("_-`") == "mfc":
+            return "Okay, I'll \"pass\" that \"message\" along to %s" % recipient
+        else:
+            return "Okay, I'll pass that message along to %s" % recipient

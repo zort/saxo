@@ -8,10 +8,9 @@ import random
 
 @saxo.event("PRIVMSG")
 def exclamation(irc):
-    if irc.text == irc.config["nick"]:
-        irc.say(irc.nick)
-    elif irc.text == irc.config["nick"] + "!":
-        irc.say(irc.nick + "!")
+    m = re.match(irc.config["nick"] + "(\\W*)$", irc.text)
+    if m:
+        irc.say(irc.nick + m.group(1))
 
 # TODO: Move this into prefix.py?
 @saxo.event("PRIVMSG")
@@ -21,7 +20,7 @@ def prefix(irc):
 
 @saxo.event("PRIVMSG")
 def wololo(irc):
-    if re.match("(18(?!!)|29(?!\\?))\\b", irc.text):
+    if re.search("\\b(18(?![!])|29(?![?]))\\b", irc.text):
         Timer(random.uniform(1.0,1.5), irc.say, ["30!"]).start()
 
 @saxo.event("PRIVMSG")
