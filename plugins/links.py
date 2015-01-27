@@ -31,13 +31,13 @@ def link(irc):
             # punctuation and whitespace
             t = title(url)
             if t:
-                words = t.translate(nopunc).split()
-                if not all(word.lower() in url.lower() for word in words):
+                if not all(word.lower().translate(nopunc) in url.lower()
+                           for word in t.split()):
                     irc.say("Title: " + t)
 
         if regex_youtube_link.match(url):
             url = url.replace("youtube.com", "fixyt.com")
-            url = url.replace("youtu.be", "fixyt.com")
+            url = url.replace("youtu.be/", "fixyt.com/watch?v=")
             url = url.replace("https://", "http://")
             irc.say("fixyt link: " + url)
 
