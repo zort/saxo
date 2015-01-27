@@ -139,7 +139,7 @@ class Message(object):
                     cmd, arg = text.split(" ", 1)
                 else:
                     cmd, arg = text, ""
-                self.cmd = cmd
+                self.cmd = cmd.lower()
                 self.arg = arg
 
     def authorised(self):
