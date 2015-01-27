@@ -14,7 +14,7 @@ regex_script = re.compile(r"(?ims)<script(.*?)</script>")
 regex_tag = re.compile(r"<[^>]+>")
 regex_entity = re.compile(r"&([^;\s]+);")
 regex_youtube_link = re.compile(r"^https?://((www\.)?youtube\.com|youtu\.be)/\S+$")
-nopunc = str.maketrans("","",string.punctuation)
+nopunc = str.maketrans("","",string.punctuation.replace(".","")) # usually punctuation gets deleted except when it's a file name
 
 @saxo.event("PRIVMSG")
 def link(irc):
@@ -33,7 +33,7 @@ def link(irc):
             if t:
                 words = t.translate(nopunc).split()
                 if not all(word.lower() in url.lower() for word in words):
-                    irc.say(t)
+                    irc.say("Title: " + t)
 
         if regex_youtube_link.match(url):
             url = url.replace("youtube.com", "fixyt.com")
