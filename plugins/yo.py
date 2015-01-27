@@ -52,7 +52,7 @@ def deliver(irc):
                     ,'The alignment of the stars foretell %s'
                     ,'The townsfolk mutter about %s'
                     ,'The monks in the forest chant "%s"'
-                    ,'From the depth of the well echoes a voice murmuring, "%s"'
+                    ,'From the depths of the well echoes a voice murmuring, "%s"'
                     ,'The tarot cards predict %s'
                     ,'The answer to Life, the Universe and Everything is: %s'
                     ,'Once a generation, someone has this brilliant thought: %s'
