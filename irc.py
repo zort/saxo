@@ -19,6 +19,7 @@ import time
 import web
 import json
 import datetime
+import random
 
 # Save PEP 3122!
 if "." in __name__:
@@ -777,6 +778,14 @@ class Saxo(object):
         cmd, arg = msg.cmd, msg.arg
         path = command_path(self.base, cmd)
         if path is None:
+            return
+
+        if random.random() < .001 and msg.nick.lower().strip("_-`") == "ramond":
+            self.send("PRIVMSG",
+                      msg.sender,
+                      random.choice(["Mum's the word.",
+                                     "Silence is golden.",
+                                     "Don't flood the channel."]))
             return
 
         def command_process(env, cmd, path, arg):

@@ -3,34 +3,38 @@
 import saxo
 import random
 
-civs = ["Aztecs 30", "Britons 16", "Byzantines 20", "Celts 19", "Chinese 18", "Franks 15", "Goths 12", "Huns 23", "Japanese 15", "Koreans 19", "Mayans 23", "Mongols 21", "Persians 26", "Saracens 18", "Spanish 18", "Teutons 18", "Turks 27", "Vikings 17"]
-
-# @saxo.setup
-# def setup(irc):
-#     path = os.path.join(irc.base, "database.sqlite3")
-#     with saxo.database(path) as db:
-#         if "saxo_civ" not in db:
-#             db["saxo_civ"].create(
-#                 ("civ", str),
-#                 ("lastused", int))
-#             for civ in civs:
-#                 db["saxo_civ"].insert()
-
-# @saxo.event("PRIVMSG")
-# def deliver(irc):
-#     path = os.path.join(irc.base, "database.sqlite3")
-#     with saxo.database(path) as db:
-#         query = "SELECT * FROM saxo_to WHERE recipient = ? COLLATE NOCASE"
-#         for row in db.query(query, irc.nick.strip("_-`")):
-#             print(row)
-#             recipient = row[1]
-#             sender = row[0]
-#             message = row[4]
-#             irc.say("%s: <%s> %s" % (recipient, sender, message))
-#             del db["saxo_to"][row]
+civs = ["Aztecs 30", "Britons 16", "Byzantines 20", "Celts 19", "Chinese 18", "Franks 15", "Goths 12", "Huns 23", "Japanese 15", "Koreans 19", "Mayans 23", "Mongols 21", "Persians 26", "Saracens 18", "Spanish 18", "Teutons 18", "Turks 5", "Vikings 17"]
+shitcivs = ["Britons", "Byzantines", "Japanese", "Saracens", "Turks", "Vikings"]
+noshitcivs = [civ[:civ.find(' ')] for civ in civs if civ[:civ.find(' ')] not in shitcivs]
+copout_prob = .05
+multi_prob = .4
 
 @saxo.pipe
 def civ(arg):
-    # path = os.path.join(irc.base, "database.sqlite3")
-    # with saxo.database(path) as db:
-    return random.choice(civs)
+    choices = None
+    if "noshit" in arg:
+        if saxo.env("nick").endswith("Phoenix"):
+            choices = ["Mongols"]
+        elif saxo.env("nick").startswith("Ramond_"):
+            choices = ["Goths", "Huns"]
+        else:
+            choices = noshitcivs
+    elif "shit" in arg:
+        choices = shitcivs
+    elif arg:
+        return 'Pick a civilization at (uniform) random. Options: noshit, shit.'
+    else:
+        choices = civs
+
+    if random.random() < copout_prob:
+        return "Choose for yourself."
+
+    
+    result = random.choice(choices)
+    
+    if random.random() < multi_prob:
+        result += " or " + random.choice(choices)
+        if random.random() < multi_prob:
+            result += " or " + random.choice(choices)
+
+    return result

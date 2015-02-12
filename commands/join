@@ -5,6 +5,8 @@
 
 import saxo
 
+# Note (zort): this doesn't work, .visit does?
+
 @saxo.command(authorised=True)
 def join(arg):
     if arg.startswith("#"):

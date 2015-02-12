@@ -77,12 +77,7 @@ def w(word):
 
     etymology, definitions = wiktionary(word)
     if not definitions:
-        curr_dir = os.path.dirname(os.path.realpath(__file__))
-        wik_file = os.path.join(curr_dir, "wik")
-        with open(wik_file) as f:
-            do_wik = compile(f.read(), wik_file, 'exec')
-        exec(do_wik)
-        # return "Couldn't get any definitions for %s" % word
+        return "Couldn't get any definitions for %s (try wik?)" % word
 
     result = format(word, definitions)
     if len(result) < 150:

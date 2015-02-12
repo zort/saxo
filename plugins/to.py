@@ -30,7 +30,7 @@ def deliver(irc):
             recipient = row[1]
             unixtime = row[2]
             message = row[4]
-            sender = sender.replace("Phoenix", random.choice(["Ponik", "Ponix"]))
+            sender = sender.replace("Phoenix", random.choice(["ponik", "ponix"]))
             irc.say("%s: <%s> %s [%s]" % (irc.nick, sender, message, time.ctime(unixtime)))
             del db["saxo_to"][row]
 

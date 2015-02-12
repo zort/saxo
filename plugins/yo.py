@@ -66,6 +66,22 @@ def deliver(irc):
                     ,'If you put a seashell to your ear, you can hear "%s"'
                     ,'Any undergraduate can tell you that %s'
                     ,'The message you have been tasked to deliver is: "%s"'
+                    ,'They go my niggaz all up in da hood sayin\' "%s"'
+                    ,'Dem hoes keep tryin to buck my rides, one spittin\' "%s"'
+                    ,'It was complete darkness. The little boy heard a whisper coming from the closed wardrobe: "%s%"'
+                    ,'"%s" is a lie.'
+                    ,'"%s" is the truth.'
+                    ,'Only idiots say things like "%s"'
+                    ,'I have been told that "%s" is a must.'
+                    ,'"%s" and a puppy just died.'
+                    ,'Money cannot buy you "%s".'
+                    ,irc.nick + ', you are the ugliest person on this planet. But "%s".'
+                    ,'Here, "%s". By the way, ' + irc.nick + ' is a terrible name.'
+                    ,'I have a message for you written with blood: "%s"'
+                    ,irc.nick + ', I will kill you in your sleep, whispering "%s".'
+                    ,'Dear ' + irc.nick + ', please stop playing with yourself while moaning "%s".'
+                    ,'In this room %s is turning me on, but %%s' % irc.nick
+                    ,'Goddamnit %s! Here have your smelly message: %%s' % irc.nick
                     ])
             irc.say(quote % message if type(quote) == type("") else quote(message))
             del db["saxo_yo"][row]

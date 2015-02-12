@@ -37,7 +37,7 @@ def fuckme(irc):
 def weakasposs(irc):
     if re.search("\\weak as piss\\b", irc.text, re.IGNORECASE):
         msg = random.choice(
-            list(map(lambda x: "Who the hell %s?" % x, ["put you up to that", "told you to do this", "told you to do that", "gave you that idea"]))
+            ["Who the hell %s?" % x for x in ["put you up to that", "told you to do this", "told you to do that", "gave you that idea"]]
             +
             ["Z" + "O" * x + "U" * (x-3) + "L" * (x-6) for x in [random.randint(8,12)]]
             )
