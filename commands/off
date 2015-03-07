@@ -11,11 +11,15 @@ def off(arg):
     if not arg:
         return "Turn a command off"
 
-    if "." in arg:
-        return "Refusing to touch commands containing '.'"
+    # if "." in arg:
+    #     return "Refusing to touch commands containing '.'"
 
     base = saxo.env("base")
     command = os.path.join(base, "commands", arg)
+    if not os.path.exists(command):
+        command = os.path.join(base, "plugins", arg)
+        if not os.path.exists(command):
+            return "Error: No such command"
 
     if os.path.islink(command):
         os.remove(command)

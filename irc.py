@@ -829,10 +829,20 @@ class Saxo(object):
         # TODO: Change the database
 
     def send(self, *args):
-        now = datetime.datetime.now()
-        if now.month == 1 and now.day == 7 and len(args) == 3 and args[0] == "PRIVMSG":
-            word, sep, rest = args[2].partition(' ')
-            args = args[0:2] + ("LA" + word.upper() + sep + rest,)
+        # Once a year jokes
+        if args[0] == "PRIVMSG" and len(args) == 3:
+            today = datetime.datetime.today()
+            if (today.month, today.day) == (1,7):
+                word, sep, rest = args[2].partition(' ')
+                # tuple does not support object assignment, awkward
+                args = args[0:2] + ("LA" + word.upper() + sep + rest,)
+                
+            if today.day == 13 and today.weekday() == 4:
+                rightsideup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,.?!'()[]{}"
+                upsidedown = "∀qϽpƎℲƃHIɾʞLWNOԀbᴚS⊥∩ΛMXʎZɐqɔpǝɟƃɥıɾʞlɯuodbɹsʇnʌʍxʎz'˙¿¡,)(][}{"
+                fliptrans = str.maketrans(rightsideup + upsidedown,
+                                          upsidedown + rightsideup)
+                args = args[0:2] + ("".join(reversed(args[2].translate(fliptrans))),)
         
         # TODO: Loop detection
         if len(args) > 1:

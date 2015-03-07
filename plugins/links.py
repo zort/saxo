@@ -3,48 +3,47 @@
 
 import html.entities
 import re
-import time
-import string
+# import time
+# import string
 
 import saxo
 
 regex_link = re.compile(r"http[s]?://[^<> \"\x01]+")
 regex_nobort = re.compile(r"\bnobort\b")
 regex_title = re.compile(r"(?ims)<title[^>]*>(.*?)</title>")
-regex_script = re.compile(r"(?ims)<script(.*?)</script>")
+# regex_script = re.compile(r"(?ims)<script(.*?)</script>")
 regex_tag = re.compile(r"<[^>]+>")
 regex_entity = re.compile(r"&([^;\s]+);")
 regex_youtube_link = re.compile(r"^https?://((www\.)?youtube\.com|youtu\.be)/\S+$")
 regex_youtube_time_link = re.compile(r"[#&?]t=[0-9sm]+$")
-nopunc = str.maketrans("","",string.punctuation.replace(".","")) # usually punctuation gets deleted except when it's a file name (and church+glass)
+# regex_punc = re.compile(r"(\s|'s|[/·:])+")
+stopwords = frozenset(str.split("i a about an are as at be by com for from how in is it of on or that the this to was what when where who will with the"))
 
 @saxo.event("PRIVMSG")
 def link(irc):
-    search = regex_link.search(irc.text)
-    if search:
-        if irc.sender.startswith("#"):
-            irc.client("link", irc.sender, search.group())
+    nobort = regex_nobort.search(irc.text)
+        
+    for url in regex_link.findall(irc.text):
+        irc.client("link", irc.sender, url)
 
-    if not regex_nobort.search(irc.text):
-        for url in regex_link.findall(irc.text):
-            if regex_twitter_link.match(url):
-                irc.say(tw(url))
-            else:
-                # Blurt out the title, but only if it's not in the URL, ignoring
-                # punctuation and whitespace
-                t = title(url)
-                if t:
-                    if not all(word.lower().replace("'","") in url.lower()
-                               for word in t.split()):
-                        irc.say("Title: " + t)
+        if not nobort:
+            # Blurt out the title, but only if it's not obvious from the URL
+            t = title(url)
+            if t:
+                # words = [word.lower() for word in re.split(regex_punc, t)]
+                # words = [word.replace("'s","").replace("-","").replace(" ","") for word in words]
+                # words = [word for word in words if word not in stopwords]
+                words = set(re.split("\W+", t)).difference(stopwords)
+                print(words)    # for debugging
+                if not all(word.lower() in url.lower() for word in words):
+                    irc.say(t)
 
-            if regex_youtube_link.match(url) and not regex_youtube_time_link.search(url):
-                url = url.replace("youtube.com", "fixyt.com")
-                url = url.replace("youtu.be/", "fixyt.com/watch?v=")
-                url = url.replace("https://", "http://")
-                irc.say("fixyt link: " + url)
-
-
+        if regex_youtube_link.match(url) and not regex_youtube_time_link.search(url):
+            url = url.replace("youtube.com", "fixyt.com")
+            url = url.replace("youtu.be/", "fixyt.com/watch?v=")
+            url = url.replace("https://", "http://")
+            irc.say("fixyt link: " + url)
+        
 
 
 
@@ -52,22 +51,12 @@ def link(irc):
 
 
 
-def longest(input, sep):
-    longest = 0
-    result = ""
-    for part in input.split(sep):
-        part = part.strip()
-        if len(part) > longest:
-           longest = len(part)
-           result = part
-    return result
 
 blacklist = (
-    "swhack.com",
-    "translate.google.com",
-    "tumbolia.appspot.com",
-    "wikia.com",
-    "wikipedia.org"
+    "wikipedia.org",
+    "terraria.gamepedia.com",
+    "prntscr.com",
+    "slexy.org"
 )
 
 def decode_entities(hypertext):
@@ -85,15 +74,17 @@ def decode_entities(hypertext):
     return regex_entity.sub(entity, hypertext)
 
 def title(url):
-    if not url:
-        url = saxo.env("url")
-    if not url:
-        return None
-    if " " in url:
+    # if not url:
+    #     url = saxo.env("url")
+    # if not url:
+    #     return None
+    # if " " in url:
+    #     return None
+    if url.endswith(".jpg") or url.endswith(".png"):
         return None
 
-    if not url.startswith("http"):
-        url = "http://" + url
+    # if not url.startswith("http"):
+    #     url = "http://" + url
 
     if "#" in url:
         url = url.split("#", 1)[0]
@@ -102,13 +93,11 @@ def title(url):
         if blacklisted in url:
             return None
 
-    if "nytimes.com" in url:
-        return url.rsplit(".html", 1)[0].rsplit("/").pop()
-
     page = saxo.request(url, limit=262144, follow=True)
     if "html" not in page:
         return None
-    text = regex_script.sub("", page["html"])
+    # text = regex_script.sub("", page["html"])
+    text = page["html"]
     search = regex_title.search(text)
     if search:
         title = search.group(1)
@@ -117,14 +106,6 @@ def title(url):
         title = title.replace("\r", "")
         title = title.replace("\n", "")
 
-        # title = longest(title, " : ")
-        # title = longest(title, " | ")
-        # title = longest(title, "| ")
-        # title = longest(title, " — ")
-        # if "youtube.com" not in url:
-        #     title = longest(title, " - ")
-        # elif title.endswith(" - YouTube"):
-        #     title = title[:-10]
-        title = title.replace('"', "'")
+        # title = title.replace('"', "'")
         return title.strip()
     return None

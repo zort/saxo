@@ -3,7 +3,7 @@
 import saxo
 import random
 
-civs = ["Aztecs 30", "Britons 16", "Byzantines 20", "Celts 19", "Chinese 18", "Franks 15", "Goths 12", "Huns 23", "Japanese 15", "Koreans 19", "Mayans 23", "Mongols 21", "Persians 26", "Saracens 18", "Spanish 18", "Teutons 18", "Turks 5", "Vikings 17"]
+civs = ["Aztecs 30", "Britons 16", "Byzantines 20", "Celts 19", "Chinese 18", "Franks 15", "Goths 12", "Huns 23", "Japanese 15", "Koreans 19", "Mayans 23", "Mongols 21", "Persians 26", "Saracens 18", "Spanish 18", "Teutons 18", "Turks 5", "Vikings 17", "Magyars", "Slavs", "Incas", "Indians", "Italians"]
 shitcivs = ["Britons", "Byzantines", "Japanese", "Saracens", "Turks", "Vikings"]
 noshitcivs = [civ[:civ.find(' ')] for civ in civs if civ[:civ.find(' ')] not in shitcivs]
 copout_prob = .05

@@ -16,10 +16,7 @@ def stream(arg):
         return "Haven't yet checked, wait a bit."
 
     if lf2stream['stream_on']:
-        return "As of %s, stream is on (since %s, %s viewers)".format(
-            format_time(lf2stream['last_checked']),
-            format_time(lf2stream['since']),
-            lf2stream['viewers'])
+        return "As of %s, stream is on (since %s, %s viewers)" % (time.ctime(lf2stream['last_checked']), str(lf2stream['since']), lf2stream['viewers'])
     else:
         return "As of %s, stream is off" % format_time(lf2stream['last_checked'])
 

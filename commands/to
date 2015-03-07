@@ -38,6 +38,6 @@ def to(arg):
         if nick.strip("_-`") == "mdsrv":
             return "Nah LOL"
         elif nick.strip("_-`") == "mfc":
-            return "Okay, I'll \"pass\" that \"message\" along to %s" % recipient
+            return "Sure, I'll \"pass\" that \"message\" along to %s" % recipient
         else:
             return "Okay, I'll pass that message along to %s" % recipient

@@ -11,12 +11,16 @@ def on(arg):
     if not arg:
         return "Turn a command on"
 
-    if "." in arg:
-        return "Refusing to touch commands containing '.'"
+    # if "." in arg:
+    #     return "Refusing to touch commands containing '.'"
 
     base = saxo.env("base")
     command = os.path.join(base, "commands", arg)
     saxo_command = os.path.join(saxo.path, "commands", arg)
+    if not os.path.exists(command):
+        command = os.path.join(base, "plugins", arg)
+        if not os.path.exists(command):
+            return "Error: No such command"
 
     if os.path.islink(command):
         return "Error: Command is a symlink"
@@ -34,4 +38,3 @@ def on(arg):
     elif os.path.isfile(saxo_command):
         os.symlink(saxo_command, command)
         return "Symlinked commands/%s to new saxo version" % arg
-    return "Error: Command does not exist"
