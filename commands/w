@@ -13,6 +13,9 @@ uri = "http://en.wiktionary.org/w/index.php?title=%s&printable=yes"
 r_tag = re.compile(r"<[^>]+>")
 r_ul = re.compile(r"(?ims)<ul>.*?</ul>")
 
+parts = ("preposition", "particle", "noun", "verb",
+         "adjective", "adverb", "interjection", "prefix", "suffix")
+
 def text(html):
     text = r_tag.sub("", html).strip()
     text = text.replace("\n", " ")
@@ -29,26 +32,12 @@ def wiktionary(word):
     etymology = None
     definitions = {}
     for line in te.splitlines():
-        if 'id="Etymology"' in line:
-            mode = "etymology"
-        elif 'id="Noun"' in line:
-            mode = "noun"
-        elif 'id="Verb"' in line:
-            mode = "verb"
-        elif 'id="Adjective"' in line:
-            mode = "adjective"
-        elif 'id="Adverb"' in line:
-            mode = "adverb"
-        elif 'id="Interjection"' in line:
-            mode = "interjection"
-        elif 'id="Particle"' in line:
-            mode = "particle"
-        elif 'id="Preposition"' in line:
-            mode = "preposition"
-        elif 'id="' in line:
-            mode = None
-
-        elif (mode == "etmyology") and ("<p>" in line):
+        search = re.search('id="([^"]+)"', line)
+        if search:
+            ID = search.group(1).lower()
+            if ID == "etymology" or ID in parts:
+                mode = ID
+        elif (mode == "etymology") and ("<p>" in line):
             etymology = text(line)
         elif (mode is not None) and ("<li>" in line):
             definitions.setdefault(mode, []).append(text(line))
@@ -56,9 +45,6 @@ def wiktionary(word):
         if "<hr" in line:
             break
     return etymology, definitions
-
-parts = ("preposition", "particle", "noun", "verb",
-         "adjective", "adverb", "interjection")
 
 def format(word, definitions, number=2):
     result = word
@@ -77,7 +63,7 @@ def w(word):
 
     etymology, definitions = wiktionary(word)
     if not definitions:
-        return "Couldn't get any definitions for %s (try wik?)" % word
+        return "Couldn't get any definitions for %s at %s" % (word, uri % urllib.parse.quote(word))
 
     result = format(word, definitions)
     if len(result) < 150:
