@@ -34,8 +34,8 @@ def link(irc):
                 # words = [word.replace("'s","").replace("-","").replace(" ","") for word in words]
                 # words = [word for word in words if word not in stopwords]
                 words = set(re.split("\W+", t)).difference(stopwords)
-                print(words)    # for debugging
                 if not all(word.lower() in url.lower() for word in words):
+                    print(str([word for word in words if word.lower() not in url.lower()]))
                     irc.say(t)
 
         if regex_youtube_link.match(url) and not regex_youtube_time_link.search(url):

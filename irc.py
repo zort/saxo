@@ -832,12 +832,12 @@ class Saxo(object):
         # Once a year jokes
         if args[0] == "PRIVMSG" and len(args) == 3:
             today = datetime.datetime.today()
-            if (today.month, today.day) == (1,7):
+            if (today.month, today.day) == (1,7): # LABEEB's joining
                 word, sep, rest = args[2].partition(' ')
                 # tuple does not support object assignment, awkward
                 args = args[0:2] + ("LA" + word.upper() + sep + rest,)
                 
-            if today.day == 13 and today.weekday() == 4:
+            if today.day == 13 and today.weekday() == 4: # Friday the 13th
                 rightsideup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,.?!'()[]{}"
                 upsidedown = "∀qϽpƎℲƃHIɾʞLWNOԀbᴚS⊥∩ΛMXʎZɐqɔpǝɟƃɥıɾʞlɯuodbɹsʇnʌʍxʎz'˙¿¡,)(][}{"
                 fliptrans = str.maketrans(rightsideup + upsidedown,
