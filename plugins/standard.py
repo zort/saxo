@@ -13,8 +13,9 @@ def exclamation(irc):
 
 @saxo.event("PRIVMSG")
 def wololo(irc):
-    if re.search(r"\bthanks bortzot\b", irc.text, re.IGNORECASE):
-        irc.say("just shut up")
+    if re.search(r"\b(thanks|thank you)\W+%s\b" % irc.config["nick"],
+                 irc.text, re.IGNORECASE):
+        irc.say("Just shut up.")
         
     if re.search(r"\b(18(?![!])|29(?![?]))\b", irc.text):
         Timer(random.uniform(1.0,1.5), irc.say, ["30!"]).start()

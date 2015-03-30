@@ -63,9 +63,12 @@ def translate(text, source="auto", target=None):
 def tr(arg):
     if not arg:
         return "Translate text from one language to another"
-
+    
     source, arg = optflag(arg)
     target, text = optflag(arg)
+    if target is None:
+        # Single flag means target, mfc's idea
+        source, target = target, source
 
     translation, source, target = translate(text, source, target)
 
